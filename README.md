@@ -20,6 +20,16 @@ Separate pages for standings and results
 Responsive layout for desktop and mobile
 Fully interactive dropdowns and input fields
 
+🛠️ Setup & Usage
+
+To use the site:
+Open the hosted link in a browser.
+To run locally:
+git clone https://github.com/jmp448-tech/client-side-project.git
+cd client-side-project
+open index.html
+No build tools or server are needed.
+
 📡 API Used
 Ergast Developer API
 
