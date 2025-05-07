@@ -23,9 +23,6 @@ Fully interactive dropdowns and input fields
 📡 API Used
 Ergast Developer API
 
-📄 API Documentation
-✅ No authentication or API key required
-
 🔐 Security Notes
 
 No API keys or secrets are used.
