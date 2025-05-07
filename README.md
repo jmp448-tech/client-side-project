@@ -2,10 +2,6 @@
 
 This web application displays real-time Formula 1 driver standings and race results using the Ergast Developer API. Built with HTML, CSS, and JavaScript, the app allows users to search, filter, and sort data interactively.
 
-🌐 Live Site
-
-➡️ View the Live Application
-
 📁 Project Structure
 
 client-side-project/
