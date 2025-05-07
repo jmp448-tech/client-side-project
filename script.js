@@ -1,65 +1,40 @@
-// Prompt for API key if not in session storage
-let apiKey = sessionStorage.getItem('tm_api_key');
-
-if (!apiKey) {
-  apiKey = prompt("Enter your Ticketmaster API key:");
-  if (apiKey) {
-    sessionStorage.setItem('tm_api_key', apiKey);
-  } else {
-    alert("API key is required to continue.");
-  }
-}
-
-const form = document.getElementById('searchForm');
-const results = document.getElementById('results');
-const resetBtn = document.getElementById('resetBtn');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const keyword = document.getElementById('keywordInput').value.trim();
-  const city = document.getElementById('cityInput').value.trim();
-
-  if (!keyword) {
-    alert("Please enter a search keyword.");
-    return;
-  }
-
-  const query = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&keyword=${encodeURIComponent(keyword)}${city ? `&city=${encodeURIComponent(city)}` : ''}`;
-
-  try {
-    const res = await fetch(query);
-    const data = await res.json();
-    displayEvents(data);
-  } catch (err) {
-    console.error(err);
-    alert("An error occurred while fetching events.");
-  }
-});
-
-function displayEvents(data) {
-  results.innerHTML = '';
-
-  if (!data._embedded || !data._embedded.events) {
-    results.innerHTML = '<p>No events found.</p>';
-    return;
-  }
-
-  data._embedded.events.forEach(event => {
-    const card = document.createElement('div');
-    card.className = 'event-card';
-    card.innerHTML = `
-      <h3>${event.name}</h3>
-      <img src="${event.images[0].url}" alt="${event.name}" />
-      <p><strong>Date:</strong> ${event.dates.start.localDate}</p>
-      <p><strong>Venue:</strong> ${event._embedded.venues[0].name}</p>
-      <a href="${event.url}" target="_blank">View Tickets</a>
-    `;
-    results.appendChild(card);
+// Load driver standings
+fetch("https://ergast.com/api/f1/current/driverStandings.json")
+  .then(res => res.json())
+  .then(data => {
+    const standings = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+    const container = document.getElementById("standings-container");
+    standings.forEach(driver => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>#${driver.position} - ${driver.Driver.givenName} ${driver.Driver.familyName}</h3>
+        <p><strong>Team:</strong> ${driver.Constructors[0].name}</p>
+        <p><strong>Points:</strong> ${driver.points}</p>
+        <p><strong>Wins:</strong> ${driver.wins}</p>
+        <p><a href="${driver.Driver.url}" target="_blank">More Info</a></p>
+      `;
+      container.appendChild(card);
+    });
   });
-}
 
-resetBtn.addEventListener('click', () => {
-  sessionStorage.removeItem('tm_api_key');
-  location.reload();
-});
+// Load latest race results
+fetch("https://ergast.com/api/f1/current/last/results.json")
+  .then(res => res.json())
+  .then(data => {
+    const race = data.MRData.RaceTable.Races[0];
+    const results = race.Results;
+    const container = document.getElementById("results-container");
+
+    results.forEach(result => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>#${result.position} - ${result.Driver.givenName} ${result.Driver.familyName}</h3>
+        <p><strong>Team:</strong> ${result.Constructor.name}</p>
+        <p><strong>Grid Start:</strong> ${result.grid}</p>
+        <p><strong>Finish Time:</strong> ${result.Time?.time || "N/A"}</p>
+      `;
+      container.appendChild(card);
+    });
+  });

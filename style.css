@@ -1,110 +1,136 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f8;
+/* Reset & Basics */
+html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
     margin: 0;
-    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f9;
     color: #333;
   }
   
-  .container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  }
-  
-  h1 {
+  /* HEADER SECTION – Red with White Text */
+  .site-header {
+    background-color: #d50000;
+    color: white;
     text-align: center;
-    margin-bottom: 30px;
+    padding: 2rem 1rem 1rem;
+  }
+  
+  .site-header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    color: white;
+  }
+  
+  .site-nav {
+    margin-top: 1rem;
+  }
+  
+  .site-nav .nav-link {
+    color: white;
+    text-decoration: none;
     font-weight: 600;
+    margin: 0 1.5rem;
+    font-size: 1.1rem;
+    transition: opacity 0.2s ease;
   }
   
-  form {
+  .site-nav .nav-link:hover,
+  .site-nav .nav-link.active {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+  
+  /* HOME PAGE STYLING */
+  .home {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  
+  .subheading {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    font-size: 1.1rem;
+    color: #000;
+  }
+  
+  .button-container {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
   }
   
-  .form-group {
+  .nav-button {
+    background-color: #c62828;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: #a31212;
+  }
+  
+  /* MAIN CONTENT */
+  main {
+    padding: 2rem;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  /* FILTER AND SEARCH BAR */
+  .filter-container {
     display: flex;
-    flex-direction: column;
-    text-align: left;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
   
-  label {
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #555;
+  .filter-container label {
+    font-weight: bold;
+    margin-right: 0.5rem;
   }
   
-  input {
-    padding: 10px;
+  .filter-container select,
+  input[type="text"] {
+    padding: 0.6rem;
+    font-size: 1rem;
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-size: 15px;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  #resetBtn {
-    margin-bottom: 20px;
-    background-color: #6c757d;
-  }
-  
-  .results-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  
-  .event-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-  
-  .event-card img {
+    max-width: 300px;
     width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
   }
   
-  .event-card h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
+  /* CARD GRID */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
   }
   
-  .event-card p {
-    font-size: 14px;
-    margin: 4px 0;
+  .card {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
-  .event-card a {
-    display: inline-block;
-    margin-top: 10px;
-    color: #007bff;
-    text-decoration: none;
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #222;
+    color: white;
+    margin-top: 2rem;
   }
-  
-  .event-card a:hover {
-    text-decoration: underline;
-  }
-  

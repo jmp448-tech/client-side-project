@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F1 Tracker | Driver Standings</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>Formula 1 Season Tracker</h1>
+    <nav class="site-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="standings.html" class="nav-link active">Driver Standings</a>
+      <a href="results.html" class="nav-link">Race Results</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Driver Standings</h2>
+    <div class="filter-container">
+      <input type="text" id="search-standings" placeholder="Search by driver or team..." />
+      <select id="teamFilter">
+        <option value="all">Show All</option>
+      </select>
+      <select id="sortStandings">
+        <option value="position">Sort by Rank</option>
+        <option value="points">Sort by Points</option>
+        <option value="wins">Sort by Wins</option>
+        <option value="name">Sort by Name</option>
+      </select>
+    </div>
+    <div id="standings-container" class="card-grid"></div>
+  </main>
+
+  <footer>
+    <p>Data provided by Ergast F1 API</p>
+  </footer>
+
+  <script>
+    const links = document.querySelectorAll('.nav-link');
+    links.forEach(link => {
+      if (window.location.pathname.includes(link.getAttribute('href'))) {
+        link.classList.add('active');
+      }
+    });
+
+    fetch("https://ergast.com/api/f1/current/driverStandings.json")
+      .then(res => res.json())
+      .then(data => {
+        const standings = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+        const container = document.getElementById("standings-container");
+        const search = document.getElementById("search-standings");
+        const teamFilter = document.getElementById("teamFilter");
+        const sortStandings = document.getElementById("sortStandings");
+
+        const teams = [...new Set(standings.map(d => d.Constructors[0].name))];
+        teams.sort().forEach(team => {
+          const option = document.createElement("option");
+          option.value = team;
+          option.textContent = team;
+          teamFilter.appendChild(option);
+        });
+
+        function display(data) {
+          container.innerHTML = "";
+          data.forEach(driver => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+              <h3>#${driver.position} - ${driver.Driver.givenName} ${driver.Driver.familyName}</h3>
+              <p><strong>Team:</strong> ${driver.Constructors[0].name}</p>
+              <p><strong>Points:</strong> ${driver.points}</p>
+              <p><strong>Wins:</strong> ${driver.wins}</p>
+              <p><a href="${driver.Driver.url}" target="_blank">More Info</a></p>
+            `;
+            container.appendChild(card);
+          });
+        }
+
+        function filterAndSort() {
+          let filtered = standings;
+          const team = teamFilter.value;
+          if (team !== "all") {
+            filtered = filtered.filter(d => d.Constructors[0].name === team);
+          }
+
+          const term = search.value.toLowerCase();
+          if (term) {
+            filtered = filtered.filter(d =>
+              d.Driver.givenName.toLowerCase().includes(term) ||
+              d.Driver.familyName.toLowerCase().includes(term) ||
+              d.Constructors[0].name.toLowerCase().includes(term)
+            );
+          }
+
+          const sortBy = sortStandings.value;
+          filtered.sort((a, b) => {
+            if (sortBy === "position") {
+              return parseInt(a.position) - parseInt(b.position);
+            } else if (sortBy === "points") {
+              return parseInt(b.points) - parseInt(a.points);
+            } else if (sortBy === "wins") {
+              return parseInt(b.wins) - parseInt(a.wins);
+            } else if (sortBy === "name") {
+              return a.Driver.familyName.localeCompare(b.Driver.familyName);
+            }
+          });
+
+          display(filtered);
+        }
+
+        display(standings);
+        search.addEventListener("input", filterAndSort);
+        teamFilter.addEventListener("change", filterAndSort);
+        sortStandings.addEventListener("change", filterAndSort);
+      });
+  </script>
+</body>
+</html>
